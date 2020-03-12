@@ -1,0 +1,4 @@
+﻿  GameApp.cpp
+  The contents of <filesystem> are only available with C++17 or later.
+LINK : warning LNK4044: 无法识别的选项“/utf-8”；已忽略
+  DirectX11.vcxproj -> C:\one\OneDrive\code\MyDirectX11\DirectX11\Debug\DirectX11.exe
