@@ -1,0 +1,11 @@
+﻿  d3dApp.cpp
+  The contents of <filesystem> are only available with C++17 or later.
+  d3dUtil.cpp
+  The contents of <filesystem> are only available with C++17 or later.
+  DXTrace.cpp
+  GameApp.cpp
+  The contents of <filesystem> are only available with C++17 or later.
+  GameTimer.cpp
+  Main.cpp
+  正在生成代码...
+  02ShaderAndVertexbuffer.vcxproj -> C:\one\OneDrive\code\MyDirectX11\DirectX11\Debug\02ShaderAndVertexbuffer.exe

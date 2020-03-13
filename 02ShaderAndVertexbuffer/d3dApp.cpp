@@ -357,20 +357,20 @@ bool D3DApp::InitDirect3D()
 	HRESULT hr = S_OK;
 
 	// 创建D3D设备 和 D3D设备上下文
-	UINT createDeviceFlags = 0;//设置设备的模式
+	UINT createDeviceFlags = 0;
 #if defined(DEBUG) || defined(_DEBUG)  
 	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
-	// 驱动类型数组 通过循环判断指定的显卡设备是否可用
+	// 驱动类型数组
 	D3D_DRIVER_TYPE driverTypes[] =
 	{
-		D3D_DRIVER_TYPE_HARDWARE,//硬件显卡设备
-		D3D_DRIVER_TYPE_WARP,//一个dx提供的软件设备 软件模拟硬件
-		D3D_DRIVER_TYPE_REFERENCE,//需要我们自己指定的引用的软件设备
+		D3D_DRIVER_TYPE_HARDWARE,
+		D3D_DRIVER_TYPE_WARP,
+		D3D_DRIVER_TYPE_REFERENCE,
 	};
 	UINT numDriverTypes = ARRAYSIZE(driverTypes);
 
-	// 特性等级数组 检查设备支持的特征等级
+	// 特性等级数组
 	D3D_FEATURE_LEVEL featureLevels[] =
 	{
 		D3D_FEATURE_LEVEL_11_1,
@@ -380,25 +380,11 @@ bool D3DApp::InitDirect3D()
 
 	D3D_FEATURE_LEVEL featureLevel;
 	D3D_DRIVER_TYPE d3dDriverType;
-	//循环检查使用的渲染设备类型 如果直接指示为硬件设备可以取消循环 直接将设备创建函数的第二个变量指定为硬件设备
 	for (UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++)
 	{
 		d3dDriverType = driverTypes[driverTypeIndex];
-
-		//创建dx设备
-		hr = D3D11CreateDevice
-		(
-			nullptr, //指示显示设备 控制使用哪个显卡 null的时候由上层驱动决定
-			d3dDriverType, //渲染设备的设备类型 这里使用了自定义的结构体来检查存在什么可用的设备
-			nullptr, //如果上面的设备类型使用了软件设备 这里需要指明是哪个软件设备
-			createDeviceFlags, //一个可选的标志值 是否启动debug模式
-			featureLevels, //特征等级 如果用null 则会自动使用最高支持的等级
-			numFeatureLevels,//特征等级的元素数目 
-			D3D11_SDK_VERSION, //SDK版本 都是这个值
-			md3dDevice.GetAddressOf(), //这个是被创建的dx设备返回的位置
-			&featureLevel, //返回支持的特征等级中的第一个
-			md3dImmediateContext.GetAddressOf()//返回的是创建的dx设备的上下文的位置
-		);
+		hr = D3D11CreateDevice(nullptr, d3dDriverType, nullptr, createDeviceFlags, featureLevels, numFeatureLevels,
+			D3D11_SDK_VERSION, md3dDevice.GetAddressOf(), &featureLevel, md3dImmediateContext.GetAddressOf());
 
 		if (hr == E_INVALIDARG)
 		{
@@ -411,7 +397,6 @@ bool D3DApp::InitDirect3D()
 			break;
 	}
 
-	//创建失败了
 	if (FAILED(hr))
 	{
 		MessageBox(0, L"D3D11CreateDevice Failed.", 0, 0);
@@ -426,12 +411,8 @@ bool D3DApp::InitDirect3D()
 	}
 
 	// 检测 MSAA支持的质量等级
-	md3dDevice->CheckMultisampleQualityLevels
-	(
-		DXGI_FORMAT_R8G8B8A8_UNORM, //纹理类型
-		4, //采样数目
-		&m4xMsaaQuality//支持的msaa级别
-	);
+	md3dDevice->CheckMultisampleQualityLevels(
+		DXGI_FORMAT_R8G8B8A8_UNORM, 4, &m4xMsaaQuality);
 	assert(m4xMsaaQuality > 0);
 
 
